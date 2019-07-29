@@ -1,0 +1,24 @@
+Try
+                XlsApp = CreateObject("Excel.Application") '创建Excel 表
+                XlsApp.Visible = True
+                XlsBook = XlsApp.Workbooks.Add
+                XlsSheet = XlsBook.Worksheets(1)
+                XlsSheet.Columns.AutoFit()  '自动换行
+                Dim RowCount As Integer
+                Dim ColCount As Integer
+                Dim k As Integer
+                RowCount = Me.DataGridView1.Rows.Count
+                ColCount = Me.DataGridView1.Columns.Count
+                For k = 0 To ColCount - 1 'DataGridView所有列数
+                    XlsSheet.Cells(1, k + 1) = Me.DataGridView1.Columns(k).HeaderText
+                Next
+                Dim i As Integer, j As Integer
+                For i = 0 To RowCount - 2 '向Excel表填充数据
+                    For j = 0 To ColCount - 1
+                        XlsSheet.Cells(i + 2, j + 1) = IIf(IsDBNull(Me.DataGridView1.Item(j, i).Value.ToString), 0, Me.DataGridView1.Item(j, i).Value.ToString)
+                    Next
+                Next
+                MsgBox("数据已经成功导出到Excel表！", MsgBoxStyle.OkOnly + MsgBoxStyle.Information, "提示！")
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
